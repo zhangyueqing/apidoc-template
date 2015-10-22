@@ -353,7 +353,7 @@ pre.language-json .pun {
   /* Widen the fixed sidebar */
   .sidebar.affix,
   .sidebar.affix-bottom {
-    width: 213px;
+    width: 313px;
   }
   .sidebar.affix {
     position: fixed; /* Undo the static from mobile first approach */
@@ -372,7 +372,7 @@ pre.language-json .pun {
   /* Widen the fixed sidebar again */
   .sidebar.affix-bottom,
   .sidebar.affix {
-    width: 263px;
+    width: 363px;
   }
 }
 

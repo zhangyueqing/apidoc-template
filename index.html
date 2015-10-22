@@ -111,7 +111,8 @@
 </script>
 
 <script id="template-article" type="text/x-handlebars-template">
-  <article id="api-{{article.group}}-{{article.name}}-{{article.version}}" {{#if hidden}}class="hide"{{/if}} data-group="{{article.group}}" data-name="{{article.name}}" data-version="{{article.version}}">
+  <article id="api-{{article.group}}-{{article.name}}-{{article.version}}" {{#if hidden}}class="hide"{{/if}} 
+    data-group="{{article.group}}" data-name="{{article.name}}" data-version="{{article.version}}">
     <div class="pull-left">
       <h1>{{article.groupTitle}}{{#if article.title}} - {{article.title}}{{/if}}</h1>
     </div>
@@ -195,7 +196,8 @@
         <tbody>
       {{#each this}}
           <tr>
-            <td class="code">{{{splitFill field "." "&nbsp;&nbsp;"}}}{{#if optional}} <span class="label label-info">{{__ "optional"}}</span>{{/if}}</td>
+            <td class="code">{{{splitFill field "." "&nbsp;&nbsp;"}}}
+              {{#if optional}} <span class="pull-right label label-info">{{__ "optional"}}</span>{{/if}}</td>
             {{#if ../../_hasType}}
               <td>
                 {{{type}}}
@@ -648,10 +650,10 @@
   </tbody>
 </script>
 
-<div class="container">
+<div class="container-fluid">
   <div class="row">
-    <div id="sidenav" class="col-sm-3"></div>
-    <div id="content" class="col-sm-9">
+    <div id="sidenav" class="col-sm-3 col-sm-offset-1"></div>
+    <div id="content" class="col-sm-7">
       <div id="project"></div>
       <div id="header"></div>
       <div id="sections"></div>
