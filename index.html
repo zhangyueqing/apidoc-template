@@ -5,33 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link href="vendor/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="vendor/bootstrap-material-design/dist/css/material.css" rel="stylesheet" media="screen">
+  <link href="vendor/bootstrap-material-design/dist/css/roboto.min.css" rel="stylesheet">
+  <link href="vendor/bootstrap-material-design/dist/css/material.min.css" rel="stylesheet">
+  <link href="vendor/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
   <link href="vendor/prettify.css" rel="stylesheet" media="screen">
   <link href="css/style.css" rel="stylesheet" media="screen, print">
   <link href="img/favicon.ico" rel="icon" type="image/x-icon">
   <script src="vendor/polyfill.js"></script>
 </head>
 <body>
-
 <script id="template-sidenav" type="text/x-handlebars-template">
-<nav id="scrollingNav" class="sidebar" data-spy="affix" >
+<nav id="scrollingNav" class="sidebar" data-spy="affix">
   <ul  class="sidenav nav nav-list">
   {{#each nav}}
     {{#if title}}
       {{#if isHeader}}
         {{#if isFixed}}
-          <li class="nav-fixed nav-header" data-group="{{group}}">
+          <li class="nav-fixed nav-header withripple" data-group="{{group}}">
             <a href="#api-{{group}}">
                 {{underscoreToSpace title}}
               </a>
         {{else}}
-          <li class="nav-header" data-group="{{group}}">
+          <li class="nav-header withripple" data-group="{{group}}">
             <a href="#api-{{group}}">
               {{underscoreToSpace title}}
             </a>
         {{/if}}
       {{else}}
         <ul class="nav">
-          <li {{#if hidden}}class="hide" {{/if}}data-group="{{group}}" data-name="{{name}}" data-version="{{version}}">
+          <li class="withripple {{#if hidden}}hide {{/if}}" data-group="{{group}}" data-name="{{name}}" data-version="{{version}}">
             <a href="#api-{{group}}-{{name}}">{{title}}
               {{#if type}}
                 <span class="pull-right label label-{{label}}">{{type}}</span>
@@ -50,33 +53,40 @@
 </script>
 
 <script id="template-project" type="text/x-handlebars-template">
-  <div class="pull-left">
-    <h1>{{name}}</h1>
-    {{#if description}}<h2>{{{nl2br description}}}</h2>{{/if}}
-  </div>
-  {{#if template.withCompare}}
-  <div class="pull-right">
-    <div class="btn-group">
-      <button id="version" class="btn btn-large dropdown-toggle" data-toggle="dropdown">
-        <strong>{{version}}</strong> <span class="caret"></span>
-      </button>
-      <ul id="versions" class="dropdown-menu open-left">
-          <li><a id="compareAllWithPredecessor" href="#">{{__ "Compare all with predecessor"}}</a></li>
-          <li class="divider"></li>
-          <li class="disabled"><a href="#">{{__ "show up to version:"}}</a></li>
-  {{#each versions}}
-        <li class="version"><a href="#">{{this}}</a></li>
-  {{/each}}
-      </ul>
+  <div class="header-panel shadow-z-2">
+    <div class="row">
+      <div class="col-xs-3">
+        <h1> <span class="glyphicon glyphicon-option-vertical"></span> {{name}}</h1>
+      </div>
+      <div class="col-xs-9">
+        <!--<div class="pull-right">-->
+          <!--<div class="btn-group">-->
+            <!--<button id="version" class="btn btn-large dropdown-toggle" data-toggle="dropdown">-->
+              <!--<strong>{{version}}</strong> <span class="caret"></span>-->
+            <!--</button>-->
+            <!--<ul id="versions" class="dropdown-menu open-left">-->
+              <!--<li><a id="compareAllWithPredecessor" href="#">{{__ "Compare all with predecessor"}}</a></li>-->
+              <!--<li class="divider"></li>-->
+              <!--<li class="disabled"><a href="#">{{__ "show up to version:"}}</a></li>-->
+              <!--{{#each versions}}-->
+              <!--<li class="version"><a href="#">{{this}}</a></li>-->
+              <!--{{/each}}-->
+            <!--</ul>-->
+          <!--</div>-->
+        <!--</div>-->
+      </div>
     </div>
   </div>
+    <!--{{#if description}}<h2>{{{nl2br description}}}</h2>{{/if}}-->
+  {{#if template.withCompare}}
+
   {{/if}}
   <div class="clearfix"></div>
 </script>
 
 <script id="template-header" type="text/x-handlebars-template">
   {{#if content}}
-    <div id="api-_">{{{content}}}</div>
+    <div class="page well active" id="api-_" >{{{content}}}</div>
   {{/if}}
 </script>
 
@@ -97,7 +107,7 @@
 </script>
 
 <script id="template-sections" type="text/x-handlebars-template">
-  <section id="api-{{group}}">
+  <section class="well page" id="api-{{group}}">
     <h1>{{underscoreToSpace title}}</h1>
     {{#if description}}
       <p>{{{nl2br description}}}</p>
@@ -114,7 +124,7 @@
   <article id="api-{{article.group}}-{{article.name}}-{{article.version}}" {{#if hidden}}class="hide"{{/if}} 
     data-group="{{article.group}}" data-name="{{article.name}}" data-version="{{article.version}}">
     <div class="pull-left">
-      <h1>{{article.groupTitle}}{{#if article.title}} - {{article.title}}{{/if}}</h1>
+      <h1>{{underscoreToSpace article.groupTitle}}{{#if article.title}} - {{article.title}}{{/if}}</h1>
     </div>
     {{#if template.withCompare}}
     <div class="pull-right">
@@ -145,7 +155,9 @@
         {{#each article.permission}}
           {{name}}
           {{#if title}}
-            &nbsp;<a href="#" data-toggle="popover" data-placement="right" data-html="true" data-content="{{nl2br description}}" title="" data-original-title="{{title}}"><span class="label label-info"><i class="icon icon-info-sign icon-white"></i></span></a>
+            &nbsp;<a href="#" data-toggle="popover" data-placement="right" data-html="true"
+                     data-content="{{title}}{{description}}">
+        <span class="label label-info"><i class="icon icon-info-sign icon-white"></i></span></a>
             {{#unless @last}}, {{/unless}}
           {{/if}}
         {{/each}}
@@ -650,15 +662,20 @@
   </tbody>
 </script>
 
-<div class="container-fluid">
+<div id="project" >
+</div>
+<div class="container-fluid main">
   <div class="row">
-    <div id="sidenav" class="col-sm-3 col-sm-offset-1"></div>
-    <div id="content" class="col-sm-7">
-      <div id="project"></div>
-      <div id="header"></div>
-      <div id="sections"></div>
-      <div id="footer"></div>
-      <div id="generator"></div>
+    <nav id="sidenav" class="col-xs-3 menu"></nav>
+    <div id="content" class="col-xs-9 pages">
+      <div class="col-xs-10">
+        <div id="header"></div>
+        <div id="sections"  ></div>
+        <div id="footer"></div>
+        <div id="generator"></div>
+      </div>
+      <div class="col-xs-2"></div>
+
     </div>
   </div>
 </div>

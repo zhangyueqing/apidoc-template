@@ -10,6 +10,8 @@ require.config({
     pathToRegexp: './vendor/path-to-regexp/index',
     prettify: './vendor/prettify/prettify',
     utilsSampleRequest: './utils/send_sample_request',
+    ripples:'./vendor/bootstrap-material-design/dist/js/ripples',
+    materialDesign:'./vendor/bootstrap-material-design/dist/js/material'
   },
   shim: {
     bootstrap: {
@@ -27,7 +29,13 @@ require.config({
     },
     prettify: {
       exports: 'prettyPrint'
-    }
+    },
+    ripples :{
+      deps: ['jquery']
+    },
+    materialDesign :{
+      deps: ['jquery']
+    },
   },
   urlArgs: 'v=' + (new Date()).getTime(),
   waitSeconds: 15
@@ -43,7 +51,9 @@ require([
   'prettify',
   'utilsSampleRequest',
   'bootstrap',
-  'pathToRegexp'
+  'pathToRegexp',
+  'ripples',
+  'materialDesign'
 ], function($, _, locale, Handlebars, apiProject, apiData, prettyPrint, sampleRequest) {
 
   // load google web fonts
@@ -232,7 +242,6 @@ require([
             });
             index++;
         }
-        console.log(nav);
     });
 }
 
@@ -355,27 +364,29 @@ require([
   });
   $('#sections').append( content );
 
-  // Bootstrap Scrollspy
-  var $scrollSpy = $(this).scrollspy({ target: '#scrollingNav', offset: 18 });
-  $('[data-spy="scroll"]').each(function () {
-    $scrollSpy('refresh');
-  });
-
-  // Content-Scroll on Navigation click.
-  $('.sidenav').find('a').on('click', function(e) {
-    e.preventDefault();
-    var id = $(this).attr('href');
-    if ($(id).length > 0)
-      $('html,body').animate({ scrollTop: parseInt($(id).offset().top) }, 400);
-    window.location.hash = $(this).attr('href');
-  });
-
-  // Quickjump on Pageload to hash position.
-  if(window.location.hash) {
-    var id = window.location.hash;
-    if ($(id).length > 0)
-      $('html,body').animate({ scrollTop: parseInt($(id).offset().top) }, 0);
-  }
+  //// Bootstrap Scrollspy
+  //var $scrollSpy = $(this).scrollspy({ target: '#scrollingNav', offset: 18 });
+  //$('[data-spy="scroll"]').each(function () {
+  //  $scrollSpy('refresh');
+  //});
+  //
+  ////Content-Scroll on Navigation click.
+  //$('.sidenav').find('a').on('click', function(e) {
+  //  e.preventDefault();
+  //  var id = $(this).attr('href');
+  //  if ($(id).length > 0){
+  //    //  $('html,body').animate({ scrollTop: parseInt($(id).offset().top) }, 1000);
+  //  }
+  //
+  //  window.location.hash = $(this).attr('href');
+  //});
+  //
+  //// Quickjump on Pageload to hash position.
+  //if(window.location.hash) {
+  //  var id = window.location.hash;
+  //  if ($(id).length > 0)
+  //    $('html,body').animate({ scrollTop: parseInt($(id).offset().top) }, 0);
+  //}
 
   /**
    * Check if Parameter (sub) List has a type Field.
@@ -733,6 +744,69 @@ require([
         results.push(element);
     });
     return results;
+  }
+
+  window.page = window.location.hash || "#api-_";
+
+  $(document).ready(function() {
+    $.material.init();
+    if (window.page != "#api-_") {
+      $(".menu").find("li[data-target=" + window.page + "]").trigger("click");
+    }
+  });
+
+  $(window).on("resize", function() {
+    $("html, body").height($(window).height());
+    $(".main, .menu").height($(window).height() - $(".header-panel").outerHeight());
+    $(".pages").height($(window).height());
+  }).trigger("resize");
+
+  $(".menu li").click(function() {
+    // Menu
+    if (!$(this).data("target")) return;
+    if ($(this).is(".active")) return;
+    $(".menu li").not($(this)).removeClass("active");
+    $(".page").not(page).removeClass("active").hide();
+    window.page = $(this).data("target");
+    var page = $(window.page);
+    window.location.hash = window.page;
+    $(this).addClass("active");
+
+
+    page.show();
+
+    var totop = setInterval(function() {
+      $(".pages").animate({scrollTop:0}, 0);
+    }, 1);
+
+    setTimeout(function() {
+      page.addClass("active");
+      setTimeout(function() {
+        clearInterval(totop);
+      }, 1000);
+    }, 100);
+  });
+
+  function cleanSource(html) {
+    var lines = html.split(/\n/);
+
+    lines.shift();
+    lines.splice(-1, 1);
+
+    var indentSize = lines[0].length - lines[0].trim().length,
+        re = new RegExp(" {" + indentSize + "}");
+
+    lines = lines.map(function(line){
+      if (line.match(re)) {
+        line = line.substring(indentSize);
+      }
+
+      return line;
+    });
+
+    lines = lines.join("\n");
+
+    return lines;
   }
 
 });
