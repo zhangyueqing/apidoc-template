@@ -22,13 +22,13 @@
     {{#if title}}
       {{#if isHeader}}
         {{#if isFixed}}
-          <li class="nav-fixed nav-header withripple" data-group="{{group}}">
-            <a href="#api-{{group}}">
+          <li class="nav-fixed nav-header " data-group="{{group}}">
+            <a href="#api-{{group}}" class="withripple">
                 {{underscoreToSpace title}}
               </a>
         {{else}}
-          <li class="nav-header withripple" data-group="{{group}}">
-            <a href="#api-{{group}}">
+          <li class="nav-header " data-group="{{group}}">
+            <a href="#api-{{group}}" class="withripple">
               {{underscoreToSpace title}}
             </a>
         {{/if}}
