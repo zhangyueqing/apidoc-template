@@ -26,26 +26,26 @@
             <a href="#api-{{group}}" class="withripple">
                 {{underscoreToSpace title}}
               </a>
+          </li>
         {{else}}
           <li class="nav-header " data-group="{{group}}">
             <a href="#api-{{group}}" class="withripple">
               {{underscoreToSpace title}}
             </a>
         {{/if}}
-      {{else}}
-        <ul class="nav">
-          <li class="withripple {{#if hidden}}hide {{/if}}" data-group="{{group}}" data-name="{{name}}" data-version="{{version}}">
-            <a href="#api-{{group}}-{{name}}">{{title}}
-              {{#if type}}
+        {{#each subNav}}
+          <ul class="nav">
+            <li class="withripple {{#if hidden}}hide {{/if}}" data-group="{{group}}" data-name="{{name}}" data-version="{{version}}">
+              <a href="#api-{{group}}-{{name}}">{{title}}
+                {{#if type}}
                 <span class="pull-right label label-{{label}}">{{type}}</span>
-              {{/if}}
-            </a>
-          </li>
-        </ul>
+                {{/if}}
+              </a>
+            </li>
+          </ul>
+        {{/each}}
       {{/if}}
-      {{#if isFixed}}
-        </li>
-      {{/if}}
+      </li>
     {{/if}}
   {{/each}}
   </ul>
@@ -235,7 +235,7 @@
     {{#if_gt params.examples.length compare=0}}
       <ul class="nav nav-tabs nav-tabs-examples" role="tablist">
         {{#each params.examples}}
-          <li{{#if_eq @index compare=0}} role="presentation" class="active"{{/if_eq}}>
+          <li {{#if_eq @index compare=0}} role="presentation" class="active"{{/if_eq}}>
             <a data-toggle="tab" href="#{{../section}}-examples-{{../id}}-{{@index}}">{{title}}</a>
           </li>
         {{/each}}

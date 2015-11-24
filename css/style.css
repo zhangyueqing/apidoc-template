@@ -247,15 +247,48 @@ pre.language-json .pun {
 /* ------------------------------------------------------------------------------------------
  * Sidenav
  * ------------------------------------------------------------------------------------------ */
-/*
- * Side navigation
- *
- * Scrollspy and affixed enhanced navigation to highlight sections and secondary
- * sections of docs content.
- */
+/* All levels of nav */
+.sidebar .nav > li > a {
+    display: block;
+    /*padding: 4px 20px;*/
+    font-size: 18px;
+    /*font-weight: 500;*/
+    /*color: #767676;*/
+}
+.sidebar .nav > li > a:hover,
+.sidebar .nav > li > a:focus {
+    /*padding-left: 19px;*/
+    /*color: #563d7c;*/
+    text-decoration: none;
+    background-color: transparent;
+    border-left: 1px solid #563d7c;
+}
+.sidebar .nav > .active > a,
+.sidebar .nav > .active:hover > a,
+.sidebar .nav > .active:focus > a {
+    /*padding-left: 18px;*/
+    /*font-weight: bold;*/
+    color: #563d7c;
+    background-color: transparent;
+    border-left: 2px solid #563d7c;
+}
 
-/* By default it's not affixed in mobile views, so undo that */
+/* Nav: second level (shown on .active) */
+.sidebar .nav .nav {
+    display: none; /* Hide by default, but at >768px, show it */
+    /*padding-bottom: 10px;*/
+}
+.sidebar .nav .nav > li > a {
+    /*padding-top: 1px;*/
+    /*padding-bottom: 1px;*/
+    /*padding-left: 30px;*/
+    font-size: 16px;
+    font-weight: normal;
+}
 
+.sidebar .nav > .active > ul {
+    display: block;
+}
 
 /* ------------------------------------------------------------------------------------------
  * Compare
@@ -469,7 +502,7 @@ ul.nav-tabs {
 
 @media print {
 
-    #sidenav,
+    #sidebar,
     #version,
     #versions,
     section .version,

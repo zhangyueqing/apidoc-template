@@ -173,35 +173,29 @@ require([
   //
   var nav = [];
   apiGroups.forEach(function(group) {
-    // Mainmenu entry
-    nav.push({
-      group: group,
-      isHeader: true,
-      title: apiGroupTitles[group]
-    });
-
+    var subNav = [];
     // Submenu
     var oldName = '';
     api.forEach(function(entry) {
-      switch(entry.type){
-        case 'post':
-          label = 'info';
-        break;
-        case 'get':
-          label = "success";
-        break;
-        case 'put':
-          label = 'warning';
-        break;
-        case 'delete':
-          label = 'danger';
-        break;
-        default:
-          label = 'default';
-      }
       if (entry.group === group) {
+        switch(entry.type){
+          case 'post':
+            label = 'info';
+            break;
+          case 'get':
+            label = "success";
+            break;
+          case 'put':
+            label = 'warning';
+            break;
+          case 'delete':
+            label = 'danger';
+            break;
+          default:
+            label = 'default';
+        }
         if (oldName !== entry.name) {
-          nav.push({
+          subNav.push({
             title: entry.title,
             group: group,
             name: entry.name,
@@ -210,7 +204,7 @@ require([
             label:label
           });
         } else {
-          nav.push({
+          subNav.push({
             title: entry.title,
             group: group,
             hidden: true,
@@ -223,8 +217,15 @@ require([
         oldName = entry.name;
       }
     });
+    // Mainmenu entry
+    nav.push({
+      group: group,
+      isHeader: true,
+      title: apiGroupTitles[group],
+      subNav:subNav
+    });
+    subNav = [];
   });
-
   function add_nav(nav, content, index) {
     if (!content)   return;
     var topics = content.match(/<h2>(.+?)<\/h2>/gi);
@@ -370,23 +371,26 @@ require([
   //  $scrollSpy('refresh');
   //});
   //
-  ////Content-Scroll on Navigation click.
-  //$('.sidenav').find('a').on('click', function(e) {
-  //  e.preventDefault();
-  //  var id = $(this).attr('href');
-  //  if ($(id).length > 0){
-  //    //  $('html,body').animate({ scrollTop: parseInt($(id).offset().top) }, 1000);
-  //  }
-  //
-  //  window.location.hash = $(this).attr('href');
-  //});
-  //
-  //// Quickjump on Pageload to hash position.
-  //if(window.location.hash) {
-  //  var id = window.location.hash;
-  //  if ($(id).length > 0)
-  //    $('html,body').animate({ scrollTop: parseInt($(id).offset().top) }, 0);
-  //}
+  //Content-Scroll on Navigation click.
+  $('.sidenav').find('a').on('click', function(e) {
+    e.preventDefault();
+    var id = $(this).attr('href');
+    if ($(id).length > 0){
+       $('html,body').animate({ scrollTop: parseInt($(id).offset().top) }, 1000);
+    }
+    window.location.hash = $(this).attr('href');
+    if ($(this).parent().is(".nav-header")) {
+      $('.nav-header').removeClass('active');
+      $(this).parent().addClass('active');
+    }
+  });
+
+  // Quickjump on Pageload to hash position.
+  if(window.location.hash) {
+    var id = window.location.hash;
+    if ($(id).length > 0)
+      $('html,body').animate({ scrollTop: parseInt($(id).offset().top) }, 0);
+  }
 
   /**
    * Check if Parameter (sub) List has a type Field.
