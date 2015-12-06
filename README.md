@@ -1,7 +1,7 @@
 Material Design Template for Apidocjs
 =====================================
 
-Material Design Documentation theme for (apiDoc)[apidocjs.com] api template generator
+Material Design template theme for [apiDoc](https://apidocjs.com) RESTful API generator
 
 
 # Installation and Usage
