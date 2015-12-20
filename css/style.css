@@ -547,10 +547,10 @@ ul.nav-tabs {
     overflow:auto;
 }
 .header-panel {
-    background-color: #009587;
-    height: 144px;
+    background-color: #37474f;
+    height: 64px;
     position: relative;
-    z-index: 3;
+    z-index: 5;
 }
 .header-panel div {
     position: relative;
@@ -562,6 +562,7 @@ ul.nav-tabs {
     font-weight: 400;
     position: absolute;
     bottom: 10px;
+    top:5px;
     padding-left: 35px;
 }
 .menu {
