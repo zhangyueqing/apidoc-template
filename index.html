@@ -58,32 +58,12 @@
   <div class="header-panel shadow-z-2">
     <div class="row">
       <div class="col-xs-3">
-        <h1> <span class="glyphicon glyphicon-option-vertical"></span> {{name}}</h1>
+        <h1> <span class="glyphicon glyphicon-option-vertical"></span> {{name}}-{{version}}</h1>
       </div>
       <div class="col-xs-9">
-        <div class="pull-right">
-          <div class="btn-group">
-            <button id="version" class="btn btn-large dropdown-toggle" data-toggle="dropdown">
-              <strong>{{version}}</strong> <span class="caret"></span>
-            </button>
-            <ul id="versions" class="dropdown-menu open-left">
-              <li><a id="compareAllWithPredecessor" href="#">{{__ "Compare all with predecessor"}}</a></li>
-              <li class="divider"></li>
-              <li class="disabled"><a href="#">{{__ "show up to version:"}}</a></li>
-              {{#each versions}}
-              <li class="version"><a href="#">{{this}}</a></li>
-              {{/each}}
-            </ul>
-          </div>
-        </div>
       </div>
     </div>
   </div>
-    {{#if description}}<h2>{{{nl2br description}}}</h2>{{/if}}
-  {{#if template.withCompare}}
-
-  {{/if}}
-  <div class="clearfix"></div>
 </script>
 
   <script id="template-header" type="text/x-handlebars-template">
