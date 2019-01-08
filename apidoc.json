@@ -13,7 +13,7 @@
     "filename":"footer.md"
   },
   "template": {
-    "withCompare": true,
-    "withGenerator": true
+    "withCompare": false,
+    "withGenerator": false
   }
 }
