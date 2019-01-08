@@ -10,8 +10,8 @@ require.config({
     pathToRegexp: './vendor/path-to-regexp/index',
     prettify: './vendor/prettify/prettify',
     utilsSampleRequest: './utils/send_sample_request',
-    ripples:'./vendor/bootstrap-material-design/dist/js/ripples',
-    materialDesign:'./vendor/bootstrap-material-design/dist/js/material'
+    ripples: './vendor/bootstrap-material-design/dist/js/ripples',
+    materialDesign: './vendor/bootstrap-material-design/dist/js/material'
   },
   shim: {
     bootstrap: {
@@ -30,10 +30,10 @@ require.config({
     prettify: {
       exports: 'prettyPrint'
     },
-    ripples :{
+    ripples: {
       deps: ['jquery']
     },
-    materialDesign :{
+    materialDesign: {
       deps: ['jquery']
     },
   },
@@ -54,7 +54,7 @@ require([
   'pathToRegexp',
   'ripples',
   'materialDesign'
-], function($, _, locale, Handlebars, apiProject, apiData, prettyPrint, sampleRequest) {
+], function ($, _, locale, Handlebars, apiProject, apiData, prettyPrint, sampleRequest) {
 
   // load google web fonts
   loadGoogleFontCss();
@@ -64,19 +64,19 @@ require([
   //
   // Templates
   //
-  var templateHeader         = Handlebars.compile( $('#template-header').html() );
-  var templateFooter         = Handlebars.compile( $('#template-footer').html() );
-  var templateArticle        = Handlebars.compile( $('#template-article').html() );
-  var templateCompareArticle = Handlebars.compile( $('#template-compare-article').html() );
-  var templateGenerator      = Handlebars.compile( $('#template-generator').html() );
-  var templateProject        = Handlebars.compile( $('#template-project').html() );
-  var templateSections       = Handlebars.compile( $('#template-sections').html() );
-  var templateSidenav        = Handlebars.compile( $('#template-sidenav').html() );
+  var templateHeader = Handlebars.compile($('#template-header').html());
+  var templateFooter = Handlebars.compile($('#template-footer').html());
+  var templateArticle = Handlebars.compile($('#template-article').html());
+  var templateCompareArticle = Handlebars.compile($('#template-compare-article').html());
+  var templateGenerator = Handlebars.compile($('#template-generator').html());
+  var templateProject = Handlebars.compile($('#template-project').html());
+  var templateSections = Handlebars.compile($('#template-sections').html());
+  var templateSidenav = Handlebars.compile($('#template-sidenav').html());
 
   //
   // apiProject defaults
   //
-  if ( ! apiProject.template)
+  if (!apiProject.template)
     apiProject.template = {};
 
   if (apiProject.template.withCompare == null)
@@ -95,14 +95,14 @@ require([
   // Data transform
   //
   // grouped by group
-  var apiByGroup = _.groupBy(api, function(entry) {
+  var apiByGroup = _.groupBy(api, function (entry) {
     return entry.group;
   });
 
   // grouped by group and name
   var apiByGroupAndName = {};
-  $.each(apiByGroup, function(index, entries) {
-    apiByGroupAndName[index] = _.groupBy(entries, function(entry) {
+  $.each(apiByGroup, function (index, entries) {
+    apiByGroupAndName[index] = _.groupBy(entries, function (entry) {
       return entry.name;
     });
   });
@@ -112,13 +112,13 @@ require([
   //
   var newList = [];
   var umlauts = { 'ä': 'ae', 'ü': 'ue', 'ö': 'oe', 'ß': 'ss' }; // TODO: remove in version 1.0
-  $.each (apiByGroupAndName, function(index, groupEntries) {
+  $.each(apiByGroupAndName, function (index, groupEntries) {
     // get titles from the first entry of group[].name[] (name has versioning)
     var titles = [];
-    $.each (groupEntries, function(titleName, entries) {
+    $.each(groupEntries, function (titleName, entries) {
       var title = entries[0].title;
-      if(title !== undefined) {
-        title.toLowerCase().replace(/[äöüß]/g, function($0) { return umlauts[$0]; });
+      if (title !== undefined) {
+        title.toLowerCase().replace(/[äöüß]/g, function ($0) { return umlauts[$0]; });
         titles.push(title + '#~#' + titleName); // '#~#' keep reference to titleName after sorting
       }
     });
@@ -130,10 +130,10 @@ require([
       titles = sortByOrder(titles, apiProject.order, '#~#');
 
     // add single elements to the new list
-    titles.forEach(function(name) {
+    titles.forEach(function (name) {
       var values = name.split('#~#');
       var key = values[1];
-      groupEntries[key].forEach(function(entry) {
+      groupEntries[key].forEach(function (entry) {
         newList.push(entry);
       });
     });
@@ -149,7 +149,7 @@ require([
   var apiVersions = {};
   apiVersions[apiProject.version] = 1;
 
-  $.each(api, function(index, entry) {
+  $.each(api, function (index, entry) {
     apiGroups[entry.group] = 1;
     apiGroupTitles[entry.group] = entry.groupTitle || entry.group;
     apiVersions[entry.version] = 1;
@@ -172,13 +172,13 @@ require([
   // create Navigationlist
   //
   var nav = [];
-  apiGroups.forEach(function(group) {
+  apiGroups.forEach(function (group) {
     var subNav = [];
     // Submenu
     var oldName = '';
-    api.forEach(function(entry) {
+    api.forEach(function (entry) {
       if (entry.group === group) {
-        switch(entry.type){
+        switch (entry.type.toLowerCase()) {
           case 'post':
             label = 'info';
             break;
@@ -188,7 +188,7 @@ require([
           case 'put':
             label = 'warning';
             break;
-          case 'delete':
+          case 'delete' || 'del':
             label = 'danger';
             break;
           default:
@@ -201,7 +201,7 @@ require([
             name: entry.name,
             type: entry.type,
             version: entry.version,
-            label:label
+            label: label
           });
         } else {
           subNav.push({
@@ -211,7 +211,7 @@ require([
             name: entry.name,
             type: entry.type,
             version: entry.version,
-            label:label
+            label: label
           });
         }
         oldName = entry.name;
@@ -222,29 +222,29 @@ require([
       group: group,
       isHeader: true,
       title: apiGroupTitles[group],
-      subNav:subNav
+      subNav: subNav
     });
     subNav = [];
   });
   function add_nav(nav, content, index) {
-    if (!content)   return;
+    if (!content) return;
     var topics = content.match(/<h2>(.+?)<\/h2>/gi);
-    topics.forEach(function(entry) {
-        var title = entry.replace(/<.+?>/g, '');    // Remove all HTML tags for the title
-        var entry_tags = entry.match(/id="(?:api-)?([^\-]+)-(.+)"/);    // Find the group and name in the id property
-        var name = (entry_tags ? entry_tags[2] : null);
-        if (title && name)    {
-              nav.splice(index, 0, {
-                group: '_',
-                name: name,
-                //isHeader: false,
-                title: title,
-              //  isFixed: false,
-            });
-            index++;
-        }
+    topics.forEach(function (entry) {
+      var title = entry.replace(/<.+?>/g, '');    // Remove all HTML tags for the title
+      var entry_tags = entry.match(/id="(?:api-)?([^\-]+)-(.+)"/);    // Find the group and name in the id property
+      var name = (entry_tags ? entry_tags[2] : null);
+      if (title && name) {
+        nav.splice(index, 0, {
+          group: '_',
+          name: name,
+          //isHeader: false,
+          title: title,
+          //  isFixed: false,
+        });
+        index++;
+      }
     });
-}
+  }
 
   // Mainmenu Header entry
   if (apiProject.header) {
@@ -252,7 +252,7 @@ require([
       group: '_',
       isHeader: true,
       title: (apiProject.header.title == null) ? locale.__('General') : apiProject.header.title,
-    //  isFixed: true
+      //  isFixed: true
     });
     add_nav(nav, apiProject.header.content, 1);
   }
@@ -278,28 +278,28 @@ require([
   var fields = {
     nav: nav
   };
-  $('#sidenav').append( templateSidenav(fields) );
+  $('#sidenav').append(templateSidenav(fields));
 
   // render Generator
-  $('#generator').append( templateGenerator(apiProject) );
+  $('#generator').append(templateGenerator(apiProject));
 
   // render Project
-  _.extend(apiProject, { versions: apiVersions});
-  $('#project').append( templateProject(apiProject) );
+  _.extend(apiProject, { versions: apiVersions });
+  $('#project').append(templateProject(apiProject));
 
   // render apiDoc, header/footer documentation
   if (apiProject.header)
-    $('#header').append( templateHeader(apiProject.header) );
+    $('#header').append(templateHeader(apiProject.header));
 
   if (apiProject.footer)
-    $('#footer').append( templateFooter(apiProject.footer) );
+    $('#footer').append(templateFooter(apiProject.footer));
 
   //
   // Render Sections and Articles
   //
   var articleVersions = {};
   var content = '';
-  apiGroups.forEach(function(groupEntry) {
+  apiGroups.forEach(function (groupEntry) {
     var articles = [];
     var oldName = '';
     var fields = {};
@@ -308,13 +308,13 @@ require([
     articleVersions[groupEntry] = {};
 
     // render all articles of a group
-    api.forEach(function(entry) {
-      if(groupEntry === entry.group) {
+    api.forEach(function (entry) {
+      if (groupEntry === entry.group) {
         if (oldName !== entry.name) {
           // determine versions
-          api.forEach(function(versionEntry) {
+          api.forEach(function (versionEntry) {
             if (groupEntry === versionEntry.group && entry.name === versionEntry.name) {
-              if ( ! articleVersions[entry.group][entry.name])
+              if (!articleVersions[entry.group][entry.name])
                 articleVersions[entry.group][entry.name] = [];
 
               articleVersions[entry.group][entry.name].push(versionEntry.version);
@@ -363,7 +363,7 @@ require([
     };
     content += templateSections(fields);
   });
-  $('#sections').append( content );
+  $('#sections').append(content);
 
   //// Bootstrap Scrollspy
   //var $scrollSpy = $(this).scrollspy({ target: '#scrollingNav', offset: 18 });
@@ -372,11 +372,11 @@ require([
   //});
   //
   //Content-Scroll on Navigation click.
-  $('.sidenav').find('a').on('click', function(e) {
+  $('.sidenav').find('a').on('click', function (e) {
     e.preventDefault();
     var id = $(this).attr('href');
-    if ($(id).length > 0){
-       $('html,body').animate({ scrollTop: parseInt($(id).offset().top) }, 1000);
+    if ($(id).length > 0) {
+      $('html,body').animate({ scrollTop: parseInt($(id).offset().top) }, 1000);
     }
     window.location.hash = $(this).attr('href');
     if ($(this).parent().is(".nav-header")) {
@@ -386,7 +386,7 @@ require([
   });
 
   // Quickjump on Pageload to hash position.
-  if(window.location.hash) {
+  if (window.location.hash) {
     var id = window.location.hash;
     if ($(id).length > 0)
       $('html,body').animate({ scrollTop: parseInt($(id).offset().top) }, 0);
@@ -401,8 +401,8 @@ require([
    */
   function _hasTypeInFields(fields) {
     var result = false;
-    $.each(fields, function(name) {
-      if (_.any(fields[name], function(item) { return item.type; }) )
+    $.each(fields, function (name) {
+      if (_.any(fields[name], function (item) { return item.type; }))
         result = true;
     });
     return result;
@@ -415,19 +415,19 @@ require([
     // bootstrap popover
     $('a[data-toggle=popover]')
       .popover()
-      .click(function(e) {
+      .click(function (e) {
         e.preventDefault();
       })
-    ;
+      ;
 
     var version = $('#version strong').html();
     $('#sidenav li').removeClass('is-new');
     if (apiProject.template.withCompare) {
-      $('#sidenav li[data-version=\'' + version + '\']').each(function(){
+      $('#sidenav li[data-version=\'' + version + '\']').each(function () {
         var group = $(this).data('group');
         var name = $(this).data('name');
         var length = $('#sidenav li[data-group=\'' + group + '\'][data-name=\'' + name + '\']').length;
-        var index  = $('#sidenav li[data-group=\'' + group + '\'][data-name=\'' + name + '\']').index($(this));
+        var index = $('#sidenav li[data-group=\'' + group + '\'][data-name=\'' + name + '\']').index($(this));
         if (length === 1 || index === (length - 1))
           $(this).addClass('is-new');
       });
@@ -466,7 +466,7 @@ require([
   // HTML-Template specific jQuery-Functions
   //
   // Change Main Version
-  $('#versions li.version a').on('click', function(e) {
+  $('#versions li.version a').on('click', function (e) {
     e.preventDefault();
 
     var selectedVersion = $(this).html();
@@ -477,13 +477,13 @@ require([
     $('#sidenav li:not(.nav-fixed)').addClass('hide');
 
     // show 1st equal or lower Version of each entry
-    $('article[data-version]').each(function(index) {
+    $('article[data-version]').each(function (index) {
       var group = $(this).data('group');
       var name = $(this).data('name');
       var version = $(this).data('version');
 
       if (version <= selectedVersion) {
-        if($('article[data-group=\'' + group + '\'][data-name=\'' + name + '\']:visible').length === 0) {
+        if ($('article[data-group=\'' + group + '\'][data-name=\'' + name + '\']:visible').length === 0) {
           // enable Article
           $('article[data-group=\'' + group + '\'][data-name=\'' + name + '\'][data-version=\'' + version + '\']').removeClass('hide');
           // enable Navigation
@@ -504,7 +504,7 @@ require([
   $('article .versions li.version a').on('click', changeVersionCompareTo);
 
   // compare url-parameter
-  $.urlParam = function(name) {
+  $.urlParam = function (name) {
     var results = new RegExp('[\\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
     return (results && results[1]) ? results[1] : null;
   };
@@ -540,7 +540,7 @@ require([
     if (compareVersion === selectedVersion)
       return;
 
-    if ( ! compareVersion && version == selectedVersion)
+    if (!compareVersion && version == selectedVersion)
       return;
 
     if (compareVersion && articleVersions[group][name][0] === selectedVersion || version === selectedVersion) {
@@ -551,7 +551,7 @@ require([
 
       var sourceEntry = {};
       var compareEntry = {};
-      $.each(apiByGroupAndName[group][name], function(index, entry) {
+      $.each(apiByGroupAndName[group][name], function (index, entry) {
         if (entry.version === version)
           sourceEntry = entry;
         if (entry.version === selectedVersion)
@@ -620,17 +620,17 @@ require([
    */
   function changeAllVersionCompareTo(e) {
     e.preventDefault();
-    $('article:visible .versions').each(function(){
+    $('article:visible .versions').each(function () {
       var $root = $(this).parents('article');
       var currentVersion = $root.data('version');
       var $foundElement = null;
-      $(this).find('li.version a').each(function() {
+      $(this).find('li.version a').each(function () {
         var selectVersion = $(this).html();
-        if (selectVersion < currentVersion && ! $foundElement)
+        if (selectVersion < currentVersion && !$foundElement)
           $foundElement = $(this);
       });
 
-      if($foundElement)
+      if ($foundElement)
         $foundElement.trigger('click');
     });
     initDynamic();
@@ -669,7 +669,7 @@ require([
    */
   function renderArticle(group, name, version) {
     var entry = {};
-    $.each(apiByGroupAndName[group][name], function(index, currentEntry) {
+    $.each(apiByGroupAndName[group][name], function (index, currentEntry) {
       if (currentEntry.version === version)
         entry = currentEntry;
     });
@@ -728,22 +728,22 @@ require([
    */
   function sortByOrder(elements, order, splitBy) {
     var results = [];
-    order.forEach (function(name) {
+    order.forEach(function (name) {
       if (splitBy)
-        elements.forEach (function(element) {
+        elements.forEach(function (element) {
           var parts = element.split(splitBy);
           var key = parts[1]; // reference keep for sorting
           if (key == name)
             results.push(element);
         });
       else
-        elements.forEach (function(key) {
+        elements.forEach(function (key) {
           if (key == name)
             results.push(name);
         });
     });
     // Append all other entries that ar not defined in order
-    elements.forEach(function(element) {
+    elements.forEach(function (element) {
       if (results.indexOf(element) === -1)
         results.push(element);
     });
@@ -752,20 +752,20 @@ require([
 
   window.page = window.location.hash || "#api-_";
 
-  $(document).ready(function() {
+  $(document).ready(function () {
     $.material.init();
     if (window.page != "#api-_") {
       $(".menu").find("li[data-target=" + window.page + "]").trigger("click");
     }
   });
 
-  $(window).on("resize", function() {
+  $(window).on("resize", function () {
     $("html, body").height($(window).height());
     $(".main, .menu").height($(window).height() - $(".header-panel").outerHeight());
     $(".pages").height($(window).height());
   }).trigger("resize");
 
-  $(".menu li").click(function() {
+  $(".menu li").click(function () {
     // Menu
     if (!$(this).data("target")) return;
     if ($(this).is(".active")) return;
@@ -779,13 +779,13 @@ require([
 
     page.show();
 
-    var totop = setInterval(function() {
-      $(".pages").animate({scrollTop:0}, 0);
+    var totop = setInterval(function () {
+      $(".pages").animate({ scrollTop: 0 }, 0);
     }, 1);
 
-    setTimeout(function() {
+    setTimeout(function () {
       page.addClass("active");
-      setTimeout(function() {
+      setTimeout(function () {
         clearInterval(totop);
       }, 1000);
     }, 100);
@@ -798,9 +798,9 @@ require([
     lines.splice(-1, 1);
 
     var indentSize = lines[0].length - lines[0].trim().length,
-        re = new RegExp(" {" + indentSize + "}");
+      re = new RegExp(" {" + indentSize + "}");
 
-    lines = lines.map(function(line){
+    lines = lines.map(function (line) {
       if (line.match(re)) {
         line = line.substring(indentSize);
       }
