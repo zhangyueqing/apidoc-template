@@ -1,3 +1,2 @@
 #!/bin/bash
-cd api-doc
-apidoc -i ../wt-gaea/server/ -o ../api-docs/
+apidoc -i ../wt-gaea/server -o ../apiDocs -t ../apidoc-template;
