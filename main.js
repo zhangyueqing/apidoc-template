@@ -760,9 +760,7 @@ require([
   });
 
   $(window).on("resize", function () {
-    $("html, body").height($(window).height());
-    $(".main, .menu").height($(window).height() - $(".header-panel").outerHeight());
-    $(".pages").height($(window).height());
+    resize();
   }).trigger("resize");
 
   $(".menu li").click(function () {
@@ -776,20 +774,18 @@ require([
     window.location.hash = window.page;
     $(this).addClass("active");
 
-
     page.show();
-
-    var totop = setInterval(function () {
-      $(".pages").animate({ scrollTop: 0 }, 0);
-    }, 1);
-
-    setTimeout(function () {
-      page.addClass("active");
-      setTimeout(function () {
-        clearInterval(totop);
-      }, 1000);
-    }, 100);
+    page.addClass("active");
+    $(".pages").animate({ scrollTop: 0 }, 0);
+    resize();
   });
+
+  function resize()
+  {
+    $("html, body").height($(window).height());
+    $(".main, .menu").height($(window).height() - $(".header-panel").outerHeight());
+    $(".pages").height($(window).height());
+  }
 
   function cleanSource(html) {
     var lines = html.split(/\n/);
