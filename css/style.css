@@ -633,7 +633,10 @@ ul.nav-tabs {
     display: block;
     opacity: 1;
 }
-
+.page >H1{
+    margin-top: 40px;
+    margin-bottom: -25px;
+}
 .nav>li>a{
     padding: 5px 15px;
 }
