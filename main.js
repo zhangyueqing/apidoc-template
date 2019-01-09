@@ -576,7 +576,7 @@ require([
     if (window.location.hash) {
       var id = window.location.hash;
       if (window.page != "#api-_") {
-        $(".menu li").find(id).trigger("click");
+        $(id).trigger("click");
       }
     }
   });
