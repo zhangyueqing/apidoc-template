@@ -617,7 +617,6 @@ ul.nav-tabs {
 }
 
 .page {
-    transform: translateY(1080px);
     transition: transform 0 linear;
     display: block;
     opacity: 1;
