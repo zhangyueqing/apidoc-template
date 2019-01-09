@@ -573,8 +573,11 @@ require([
 
   $(document).ready(function () {
     $.material.init();
-    if (window.page != "#api-_") {
-      $(".menu").find("li[data-target=" + window.page + "]").trigger("click");
+    if (window.location.hash) {
+      var id = window.location.hash;
+      if (window.page != "#api-_") {
+        $(".menu li").find(id).trigger("click");
+      }
     }
   });
 
@@ -582,25 +585,23 @@ require([
     resize();
   }).trigger("resize");
 
+  // get url parameter
+  $.urlParam = function (name) {
+    var results = new RegExp('[\\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+    return (results && results[1]) ? results[1] : null;
+  };
+  
+  // click menu
   $(".menu li").click(function () {
-    // Menu
-    if (!$(this).data("target")) return;
-    if ($(this).is(".active")) return;
+    if ($(this).is(".active")) {
+      return;
+    }
     $(".menu li").not($(this)).removeClass("active");
-    $(".page").not(page).removeClass("active").hide();
-    window.page = $(this).data("target");
-    var page = $(window.page);
-    window.location.hash = window.page;
     $(this).addClass("active");
-
-    page.show();
-    page.addClass("active");
-    $(".pages").animate({ scrollTop: 0 }, 0);
-    resize();
   });
 
-  function resize()
-  {
+  // resize window
+  function resize() {
     $("html, body").height($(window).height());
     $(".main, .menu").height($(window).height() - $(".header-panel").outerHeight());
     $(".pages").height($(window).height());
