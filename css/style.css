@@ -4,6 +4,9 @@
 body {
     min-width: 980px;
 }
+body .well {
+    box-shadow:0 0px 20px -15px rgba(0, 0, 0, 0.6) !important;
+}
 
 body, p, a, div, th, td {
     font-family: "Source Sans Pro", sans-serif;
@@ -55,7 +58,7 @@ section h1 {
     font-size: 32px;
     line-height: 40px;
     padding-bottom: 14px;
-    margin: 0 0 20px 0;
+    margin: 0 10px 20px 0;
     padding: 0;
 }
 
@@ -605,6 +608,7 @@ ul.nav-tabs {
 .pages > div {
     padding: 0 5px;
     padding-top: 64px;
+    
 }
 
 .pages .header {
@@ -629,6 +633,11 @@ ul.nav-tabs {
     display: block;
     opacity: 1;
 }
+
 .nav>li>a{
     padding: 5px 15px;
+}
+
+.pull-left > H1{
+    margin-top: 55px;
 }
