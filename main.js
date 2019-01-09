@@ -365,12 +365,6 @@ require([
   });
   $('#sections').append(content);
 
-  //// Bootstrap Scrollspy
-  //var $scrollSpy = $(this).scrollspy({ target: '#scrollingNav', offset: 18 });
-  //$('[data-spy="scroll"]').each(function () {
-  //  $scrollSpy('refresh');
-  //});
-  //
   //Content-Scroll on Navigation click.
   $('.sidenav').find('a').on('click', function (e) {
     e.preventDefault();
@@ -384,13 +378,6 @@ require([
       $(this).parent().addClass('active');
     }
   });
-
-  // Quickjump on Pageload to hash position.
-  if (window.location.hash) {
-    var id = window.location.hash;
-    if ($(id).length > 0)
-      $('html,body').animate({ scrollTop: parseInt($(id).offset().top) }, 0);
-  }
 
   /**
    * Check if Parameter (sub) List has a type Field.
